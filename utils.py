@@ -1,5 +1,5 @@
 from sklearn.model_selection import train_test_split
-from sklearn import svm, datasets
+from sklearn import svm, datasets, metrics
 # We will put all utils here
 
 def read_digits():
@@ -31,11 +31,45 @@ def train_model(x, y, model_params, model_type="svm"):
     model.fit(x, y)
     return model
 
-def train_test_dev_split():
+
+# Split data into train, test and dev subsets
+def train_test_dev_split(x, y, test_size, random_state=1):
+    X_train, X_temp, y_train, y_temp = train_test_split(
+        x, y, test_size=0.3, shuffle=False, random_state=random_state
+    )
+    X_dev, X_test, y_dev, y_test = train_test_split(
+        X_temp, y_temp, test_size=0.5, shuffle=False, random_state=random_state
+    )
 
     return X_train, X_test, X_dev, y_train, y_test, y_dev
 
 
-def predict_and_eval():
+def predict_and_eval(model, X_test, y_test, dataset):
     # prediction
+    predicted = model.predict(X_test)
     # report metrics
+    print(
+    f"Classification report for classifier {model} on {dataset} dataset:\n"
+    f"{metrics.classification_report(y_test, predicted)}\n"
+    )
+
+    disp = metrics.ConfusionMatrixDisplay.from_predictions(y_test, predicted)
+    disp.figure_.suptitle("Confusion Matrix")
+    print(f"Confusion matrix for {dataset} dataset:\n{disp.confusion_matrix}")
+
+    # The ground truth and predicted lists
+    y_true = []
+    y_pred = []
+    cm = disp.confusion_matrix
+
+    # For each cell in the confusion matrix, add the corresponding ground truths
+    # and predictions to the lists
+    for gt in range(len(cm)):
+        for pred in range(len(cm)):
+            y_true += [gt] * cm[gt][pred]
+            y_pred += [pred] * cm[gt][pred]
+
+    print(
+        f"Classification report rebuilt from confusion matrix for {dataset} dataset:\n"
+        f"{metrics.classification_report(y_true, y_pred)}\n"
+    )
