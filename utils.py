@@ -47,29 +47,4 @@ def train_test_dev_split(x, y, test_size, random_state=1):
 def predict_and_eval(model, X_test, y_test, dataset):
     # prediction
     predicted = model.predict(X_test)
-    # report metrics
-    print(
-    f"Classification report for classifier {model} on {dataset} dataset:\n"
-    f"{metrics.classification_report(y_test, predicted)}\n"
-    )
-
-    disp = metrics.ConfusionMatrixDisplay.from_predictions(y_test, predicted)
-    disp.figure_.suptitle("Confusion Matrix")
-    print(f"Confusion matrix for {dataset} dataset:\n{disp.confusion_matrix}")
-
-    # The ground truth and predicted lists
-    y_true = []
-    y_pred = []
-    cm = disp.confusion_matrix
-
-    # For each cell in the confusion matrix, add the corresponding ground truths
-    # and predictions to the lists
-    for gt in range(len(cm)):
-        for pred in range(len(cm)):
-            y_true += [gt] * cm[gt][pred]
-            y_pred += [pred] * cm[gt][pred]
-
-    print(
-        f"Classification report rebuilt from confusion matrix for {dataset} dataset:\n"
-        f"{metrics.classification_report(y_true, y_pred)}\n"
-    )
+    return metrics.accuracy_score(y_test, predicted)
