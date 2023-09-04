@@ -22,7 +22,7 @@ C_ranges = [0.1, 1, 2, 5, 10]
 X, y = read_digits()
 
 # 3. Data splitting -- to create train, test and dev sets
-X_train, X_test, X_dev, y_train, y_test, y_dev = train_test_dev_split(X, y, test_size=0.3)
+X_train, X_test, X_dev, y_train, y_test, y_dev = train_test_dev_split(X, y, test_size=0.3, dev_size=0.2)
 
 # 4. Data Preprocessing
 X_train = preprocess_data(X_train)

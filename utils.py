@@ -33,12 +33,12 @@ def train_model(x, y, model_params, model_type="svm"):
 
 
 # Split data into train, test and dev subsets
-def train_test_dev_split(x, y, test_size, random_state=1):
+def train_test_dev_split(x, y, test_size, dev_size, random_state=1):
     X_train, X_temp, y_train, y_temp = train_test_split(
-        x, y, test_size=0.3, shuffle=False, random_state=random_state
+        x, y, test_size=test_size, shuffle=False, random_state=random_state
     )
     X_dev, X_test, y_dev, y_test = train_test_split(
-        X_temp, y_temp, test_size=0.5, shuffle=False, random_state=random_state
+        X_temp, y_temp, test_size=dev_size, shuffle=False, random_state=random_state
     )
 
     return X_train, X_test, X_dev, y_train, y_test, y_dev
