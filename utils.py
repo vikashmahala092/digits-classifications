@@ -44,7 +44,24 @@ def train_test_dev_split(x, y, test_size, dev_size, random_state=1):
     return X_train, X_test, X_dev, y_train, y_test, y_dev
 
 
-def predict_and_eval(model, X_test, y_test, dataset):
+def predict_and_eval(model, X_test, y_test):
     # prediction
     predicted = model.predict(X_test)
     return metrics.accuracy_score(y_test, predicted)
+
+
+def tune_hparams(X_train, y_train, X_dev, y_dev, list_of_all_param_combination):
+    best_acc_so_far = -1
+    best_model = None
+    for comb in list_of_all_param_combination:
+        #print("Running for gamma={} C={}".format(comb['gamma'], comb['C']))
+        # 5. Model training
+        cur_model = train_model(X_train, y_train, {'gamma': comb['gamma'], 'C': comb['C']}, model_type="svm")
+        cur_accuracy = predict_and_eval(cur_model, X_dev, y_dev)
+        if cur_accuracy > best_acc_so_far:
+            #print("New best accuracy: ", cur_accuracy)
+            best_acc_so_far = cur_accuracy
+            optimal_gamma = comb['gamma']
+            optimal_C = comb['C']
+            best_model = cur_model
+    return optimal_gamma, optimal_C, best_model, best_acc_so_far
