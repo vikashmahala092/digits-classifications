@@ -14,7 +14,7 @@ hand-written digits, from 0-9.
 
 
 # Import datasets, classifiers and performance metrics
-from utils import preprocess_data, split_data, train_model, read_digits, train_test_dev_split, predict_and_eval, tune_hparams
+from utils import preprocess_data, split_data, train_model, read_digits, train_test_dev_split, predict_and_eval, tune_hparams, get_hyperparameter_combinations
 from itertools import product
 
 
@@ -33,9 +33,8 @@ X_dev = preprocess_data(X_dev)
 # Creating dictionary of all list combinations for hyperparameters
 gamma_ranges = [0.001, 0.01, 0.1, 1, 10, 100]
 C_ranges = [0.1, 1, 2, 5, 10]
-combinations = list(product(gamma_ranges, C_ranges))
 
-list_of_dicts = [{ 'gamma': combo[0], 'C': combo[1]} for combo in combinations]
+list_of_dicts = get_hyperparameter_combinations(gamma_ranges, C_ranges)
 
 # Hyper parameter tunning
 optimal_gamma, optimal_C, best_model, best_accuracy = tune_hparams(X_train, y_train, X_dev, y_dev, list_of_dicts)

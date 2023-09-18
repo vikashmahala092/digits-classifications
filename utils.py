@@ -1,5 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn import svm, datasets, metrics
+from itertools import product
 # We will put all utils here
 
 def read_digits():
@@ -65,3 +66,8 @@ def tune_hparams(X_train, y_train, X_dev, y_dev, list_of_all_param_combination):
             optimal_C = comb['C']
             best_model = cur_model
     return optimal_gamma, optimal_C, best_model, best_acc_so_far
+
+
+def get_hyperparameter_combinations(gamma_ranges, C_ranges):
+        combinations = list(product(gamma_ranges, C_ranges))
+        return [{ 'gamma': combo[0], 'C': combo[1]} for combo in combinations]
