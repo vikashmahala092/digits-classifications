@@ -31,5 +31,7 @@ def  test_data_splitting():
         X_train, X_test, X_dev, y_train, y_test, y_dev = train_test_dev_split(X,y, test_size=test_size, dev_size = dev_size)
 
         assert (len(X_train) == int(train_size * len(X)))
+        assert (len(X_test) == int(test_size * len(X)))
+        assert (len(X_dev) == int(dev_size * len(X)))
 
 
