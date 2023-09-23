@@ -58,6 +58,15 @@ for comb in size_list_of_dicts:
     dev_acc = predict_and_eval(best_model, X_dev, y_dev)
     test_acc = predict_and_eval(best_model, X_test, y_test)
     train_size = 1 -(comb['test_size'] + comb['dev_size'])
+
+    # added quiz - 1 changes
+    print("Number of Samples in train dataset = ", len(X_train))
+    print("Number of Samples in test dataset = ", len(X_test))
+    print("Number of Samples in dev dataset = ", len(X_dev))
+
+    print("Size of image in dataset = ", X_train[0].shape)
+
+
     print("test_size= " , comb['test_size'], "dev_size= ", comb['dev_size'], "train_size= ", train_size, "train_acc= ", train_acc, "dev_acc= ", dev_acc, "test_acc= ", test_acc, "optimal_gamma= ", optimal_gamma, "optimal_C= ", optimal_C)
 
 # 6. Getting model Predictions and Evaluating on test set
